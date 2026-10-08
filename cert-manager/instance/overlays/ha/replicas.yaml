@@ -1,0 +1,11 @@
+apiVersion: operator.openshift.io/v1alpha1
+kind: CertManager
+metadata:
+  name: cluster
+spec:
+  controllerConfig:
+    overrideReplicas: 2
+  cainjectorConfig:
+    overrideReplicas: 2
+  webhookConfig:
+    overrideReplicas: 3

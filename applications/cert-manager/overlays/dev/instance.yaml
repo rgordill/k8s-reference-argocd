@@ -1,0 +1,6 @@
+- op: replace
+  path: /metadata/name
+  value: cert-manager-dev
+- op: replace
+  path: /spec/source/path
+  value: cert-manager/instance/overlays/dev
