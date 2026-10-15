@@ -1,0 +1,6 @@
+- op: replace
+  path: /metadata/name
+  value: cloudnative-pg-helm-multi
+- op: replace
+  path: /spec/source/path
+  value: manifests/cloudnative-pg/cluster/overlays/multi

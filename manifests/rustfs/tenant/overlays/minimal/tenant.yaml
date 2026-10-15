@@ -1,0 +1,29 @@
+# Matches s3:rustfs:minimal — single-replica Tenant, one PVC (data).
+# Docs: https://docs.rustfs.com/en/installation/cloud-native/operator/tenant
+#
+# Create credentials before sync succeeds:
+#   kubectl -n rustfs create secret generic rustfs-tenant-creds \
+#     --from-literal=accesskey='...' \
+#     --from-literal=secretkey='...'
+apiVersion: rustfs.com/v1alpha1
+kind: Tenant
+metadata:
+  name: rustfs
+  labels:
+    app.kubernetes.io/part-of: rustfs
+    app.kubernetes.io/component: rustfs
+spec:
+  image: rustfs/rustfs:1.0.1
+  credsSecret:
+    name: rustfs-tenant-creds
+  pools:
+    - name: pool-0
+      servers: 1
+      persistence:
+        volumesPerServer: 1
+        volumeClaimTemplate:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 10Gi

@@ -1,0 +1,6 @@
+- op: replace
+  path: /metadata/name
+  value: rustfs-helm-minimal
+- op: replace
+  path: /spec/source/path
+  value: manifests/rustfs/tenant/overlays/minimal

@@ -1,0 +1,6 @@
+- op: replace
+  path: /metadata/name
+  value: external-secrets-operator-ha
+- op: replace
+  path: /spec/sources/0/helm/valueFiles/0
+  value: $values/manifests/external-secrets/helm/overlays/ha/values.yaml

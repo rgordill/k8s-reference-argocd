@@ -1,0 +1,6 @@
+- op: replace
+  path: /metadata/name
+  value: cert-manager-helm-dev
+- op: replace
+  path: /spec/sources/0/helm/valueFiles/0
+  value: $values/manifests/cert-manager/helm/overlays/dev/values.yaml

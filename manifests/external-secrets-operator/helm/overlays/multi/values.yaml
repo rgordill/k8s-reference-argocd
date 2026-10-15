@@ -1,0 +1,80 @@
+# HA values for external-secrets-operator
+# Overrides for high availability deployment
+
+# CRDs
+crds:
+  enabled: true
+
+replicaCount: 2
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: DoNotSchedule
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/instance: external-secrets-operator
+        app.kubernetes.io/component: controller
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        app.kubernetes.io/instance: external-secrets-operator
+        app.kubernetes.io/component: controller
+
+# Enable webhook with cert-manager for HA
+webhook:
+  create: true
+  replicaCount: 3
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/instance: external-secrets-operator
+          app.kubernetes.io/component: webhook
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/instance: external-secrets-operator
+          app.kubernetes.io/component: webhook
+  certManager:
+    enabled: false
+    # enabled: true
+    # issuerRef:
+    #   name: cert-manager-issuer
+    #   kind: Issuer
+
+# Cert controller with cert-manager for HA
+certController:
+  create: true
+  replicaCount: 2
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/instance: external-secrets-operator
+          app.kubernetes.io/component: cert-controller
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/instance: external-secrets-operator
+          app.kubernetes.io/component: cert-controller
+          
+# Metrics with ServiceMonitor for HA
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    interval: 30s
+    scrapeTimeout: 10s

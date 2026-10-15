@@ -1,0 +1,12 @@
+# cert-manager Helm values — development / single-replica (matches cert-manager:helm:dev)
+# Chart: https://charts.jetstack.io → cert-manager
+crds:
+  enabled: true
+
+replicaCount: 1
+
+webhook:
+  replicaCount: 1
+
+cainjector:
+  replicaCount: 1

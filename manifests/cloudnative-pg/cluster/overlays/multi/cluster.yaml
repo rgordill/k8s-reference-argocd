@@ -1,0 +1,42 @@
+# Matches cloudnative-pg:postgres:multi — 3 instances across zones, separate data/WAL,
+# external object-store backup (Barman). Create Secret cnpg-barman-credentials first
+# (keys ACCESS_KEY_ID, ACCESS_SECRET_KEY) and set destinationPath / endpointURL.
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres
+  labels:
+    app.kubernetes.io/part-of: cloudnative-pg
+    app.kubernetes.io/component: postgresql
+spec:
+  instances: 3
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 10Gi
+  walStorage:
+    size: 5Gi
+  affinity:
+    enablePodAntiAffinity: true
+    topologyKey: topology.kubernetes.io/zone
+    podAntiAffinityType: required
+  bootstrap:
+    initdb:
+      database: app
+      owner: app
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      # Replace with your bucket / endpoint before production use.
+      destinationPath: s3://REPLACE_ME_BUCKET/cloudnative-pg/postgres/
+      # endpointURL: https://s3.example.com
+      s3Credentials:
+        accessKeyId:
+          name: cnpg-barman-credentials
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: cnpg-barman-credentials
+          key: ACCESS_SECRET_KEY
+      wal:
+        compression: gzip
+      data:
+        compression: gzip

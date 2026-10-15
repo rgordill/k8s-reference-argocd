@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: rustfs
+resources:
+- ../../base
+- tenant.yaml
+secretGenerator:
+- name: rustfs-tenant-creds
+  type: Opaque
+  envs:
+  - creds.env
+generatorOptions:
+  disableNameSuffixHash: true

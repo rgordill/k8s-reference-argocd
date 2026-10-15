@@ -1,0 +1,20 @@
+# RustFS Operator Helm values
+# Chart: https://github.com/rustfs/operator → deploy/rustfs-operator
+# Docs: https://docs.rustfs.com/en/installation/cloud-native/operator/installation
+# Matches architecture topology s3:rustfs:minimal (operator-deployed)
+operator:
+  replicas: 1
+  metrics:
+    enabled: true
+  tenantMonitor:
+    enabled: true
+    intervalSeconds: 300
+
+console:
+  enabled: true
+  service:
+    type: ClusterIP
+
+# Set true on OpenShift so chart Deployments omit fixed UIDs for SCC compatibility.
+openshift:
+  enabled: true

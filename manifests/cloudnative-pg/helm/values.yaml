@@ -1,0 +1,10 @@
+# CloudNativePG operator Helm values
+# Chart: https://cloudnative-pg.github.io/charts → cloudnative-pg (appVersion 1.30.x)
+# Matches architecture topologies cloudnative-pg:postgres:{single,multi} (operator 1.30)
+crds:
+  create: true
+
+replicaCount: 1
+
+config:
+  clusterWide: true

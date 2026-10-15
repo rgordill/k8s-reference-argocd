@@ -1,0 +1,6 @@
+- op: replace
+  path: /metadata/name
+  value: cloudnative-pg-olm-single
+- op: replace
+  path: /spec/source/path
+  value: manifests/cloudnative-pg/cluster/overlays/single

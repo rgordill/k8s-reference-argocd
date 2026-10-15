@@ -1,0 +1,17 @@
+# Matches cloudnative-pg:postgres:single — one instance, data + WAL on the same volume.
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres
+  labels:
+    app.kubernetes.io/part-of: cloudnative-pg
+    app.kubernetes.io/component: postgresql
+spec:
+  instances: 1
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 10Gi
+  bootstrap:
+    initdb:
+      database: app
+      owner: app

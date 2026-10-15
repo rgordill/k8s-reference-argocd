@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: rustfs-operator
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+spec:
+  project: default
+  destination:
+    name: in-cluster
+    namespace: rustfs-system
+  sources:
+    # Chart is shipped in the operator git repo (not a Helm HTTP registry).
+    # https://docs.rustfs.com/en/installation/cloud-native/operator/installation
+    - repoURL: https://github.com/rustfs/operator.git
+      path: deploy/rustfs-operator
+      targetRevision: 0.0.8
+      helm:
+        releaseName: rustfs-operator
+        valueFiles:
+          - $values/manifests/rustfs/helm/values.yaml
+    - repoURL: https://github.com/rgordill/k8s-reference-argocd.git
+      targetRevision: HEAD
+      ref: values
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

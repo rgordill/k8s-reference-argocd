@@ -1,0 +1,6 @@
+- op: replace
+  path: /metadata/name
+  value: cert-manager-olm-ha
+- op: replace
+  path: /spec/source/path
+  value: manifests/cert-manager/olm/instance/overlays/ha
